@@ -11,22 +11,16 @@ from .budget_enum import budget_enum
 # https://github.com/uwblueprint/dancefest-web/blob/master/db/models.py#L10-L70
 # https://github.com/uwblueprint/plasta/blob/master/backend/app/models/mixins.py#L10-L95
 
-class Restaurant(db.Model):
-    # define the restaurants table
+class RestaurantGroup(db.Model):
+    # define the restaurant groups table
 
-    __tablename__ = 'restaurants'
+    __tablename__ = 'restaurantGroups'
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     name = db.Column(db.String(50), nullable=False)
-    address = db.Column(db.String(250))
-    type = db.Column(db.String(50))
-    budget = db.Column(budget_enum)
     description = db.Column(db.String(250))
-    rating = db.Column(db.Integer)
-    group_id = db.Column(Integer, ForeignKey('groups.id'))
+    restaurant_ids = relationship("Restaurant")
 
-    # must define how to convert to a dict so that Restaurant can eventually be serialized into JSON
-    # this would be a good method to include in a base Mixin
     def to_dict(self, include_relationships=False):
         cls = type(self)
         # mapper allows us to grab the columns of a Model
